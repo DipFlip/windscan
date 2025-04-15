@@ -1,0 +1,121 @@
+fetch("https://www.ready.noaa.gov/hypub-bin/trajresults.pl?jobidno=130509", {
+  "headers": {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "accept-language": "en-US,en;q=0.9,sv;q=0.8,ja;q=0.7,de;q=0.6,la;q=0.5",
+    "cache-control": "max-age=0",
+    "sec-ch-ua": "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\"",
+    "sec-ch-ua-mobile": "?1",
+    "sec-ch-ua-platform": "\"Android\"",
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "same-origin",
+    "upgrade-insecure-requests": "1",
+    "cookie": "CGISESSID=d0c4341431844d96b9dd505f6640ef6b; oneTimePop=used",
+    "Referer": "https://www.ready.noaa.gov/hypub-bin/trajresults.pl?jobidno=130509",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  },
+  "body": null,
+  "method": "GET"
+}); ;
+fetch("https://www.ready.noaa.gov/hypub-bin/trajresults.pl?jobidno=130509", {
+  "headers": {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "accept-language": "en-US,en;q=0.9,sv;q=0.8,ja;q=0.7,de;q=0.6,la;q=0.5",
+    "sec-ch-ua": "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\"",
+    "sec-ch-ua-mobile": "?1",
+    "sec-ch-ua-platform": "\"Android\"",
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "same-origin",
+    "upgrade-insecure-requests": "1",
+    "cookie": "CGISESSID=d0c4341431844d96b9dd505f6640ef6b; oneTimePop=used",
+    "Referer": "https://www.ready.noaa.gov/hypub-bin/traj2.pl",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  },
+  "body": null,
+  "method": "GET"
+}); ;
+fetch("https://www.ready.noaa.gov/hypub-bin/traj2.pl", {
+  "headers": {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "accept-language": "en-US,en;q=0.9,sv;q=0.8,ja;q=0.7,de;q=0.6,la;q=0.5",
+    "cache-control": "max-age=0",
+    "content-type": "application/x-www-form-urlencoded",
+    "sec-ch-ua": "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\"",
+    "sec-ch-ua-mobile": "?1",
+    "sec-ch-ua-platform": "\"Android\"",
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "same-origin",
+    "sec-fetch-user": "?1",
+    "upgrade-insecure-requests": "1",
+    "cookie": "CGISESSID=d0c4341431844d96b9dd505f6640ef6b; oneTimePop=used",
+    "Referer": "https://www.ready.noaa.gov/hypub-bin/traj1.pl",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  },
+  "body": "direction=Backward&vertical=0&Start+year=22&Start+month=10&Start+day=29&Start+hour=22&duration=168&repeatsrc=0&ntrajs=24&Source+lat=41.980000&Source+lon=-87.900000&Source+lat2=&Source+lon2=&Source+lat3=&Source+lon3=&Midlayer+height=No&Source+hgt1=500&Source+hunit=0&Source+hgt2=0&Source+hgt3=0&gis=1&gsize=96&Zoom+Factor=70&projection=0&Vertical+Unit=1&Label+Interval=6&color=Yes&colortype=Yes&pltsrc=1&circle=-1&county=arlmap&psfile=No&pdffile=Yes&mplot=YES&rain=1",
+  "method": "POST"
+}); ;
+fetch("https://www.ready.noaa.gov/hypub-bin/traj1.pl", {
+  "headers": {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "accept-language": "en-US,en;q=0.9,sv;q=0.8,ja;q=0.7,de;q=0.6,la;q=0.5",
+    "cache-control": "max-age=0",
+    "content-type": "application/x-www-form-urlencoded",
+    "sec-ch-ua": "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\"",
+    "sec-ch-ua-mobile": "?1",
+    "sec-ch-ua-platform": "\"Android\"",
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "same-origin",
+    "sec-fetch-user": "?1",
+    "upgrade-insecure-requests": "1",
+    "cookie": "CGISESSID=d0c4341431844d96b9dd505f6640ef6b; oneTimePop=used",
+    "Referer": "https://www.ready.noaa.gov/hypub-bin/trajsrcm.pl",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  },
+  "body": "mfile=gdas1.oct22.w5",
+  "method": "POST"
+}); ;
+fetch("https://www.ready.noaa.gov/hypub-bin/trajsrcm.pl", {
+  "headers": {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "accept-language": "en-US,en;q=0.9,sv;q=0.8,ja;q=0.7,de;q=0.6,la;q=0.5",
+    "cache-control": "max-age=0",
+    "content-type": "application/x-www-form-urlencoded",
+    "sec-ch-ua": "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\"",
+    "sec-ch-ua-mobile": "?1",
+    "sec-ch-ua-platform": "\"Android\"",
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "same-origin",
+    "sec-fetch-user": "?1",
+    "upgrade-insecure-requests": "1",
+    "cookie": "CGISESSID=d0c4341431844d96b9dd505f6640ef6b; oneTimePop=used",
+    "Referer": "https://www.ready.noaa.gov/hypub-bin/trajasrc.pl",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  },
+  "body": "metdata=GDAS1&SOURCELOC=decdegree&Lat=41.980000&Latns=N&Lon=87.900000&Lonew=W&Latd=&Latm=&Lats=&Latdns=N&Lond=&Lonm=&Lons=&Londew=W&CITYNAME=&WMO=",
+  "method": "POST"
+}); ;
+fetch("https://www.ready.noaa.gov/hypub-bin/trajasrc.pl", {
+  "headers": {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "accept-language": "en-US,en;q=0.9,sv;q=0.8,ja;q=0.7,de;q=0.6,la;q=0.5",
+    "cache-control": "max-age=0",
+    "content-type": "application/x-www-form-urlencoded",
+    "sec-ch-ua": "\"Google Chrome\";v=\"135\", \"Not-A.Brand\";v=\"8\", \"Chromium\";v=\"135\"",
+    "sec-ch-ua-mobile": "?1",
+    "sec-ch-ua-platform": "\"Android\"",
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "same-origin",
+    "sec-fetch-user": "?1",
+    "upgrade-insecure-requests": "1",
+    "cookie": "CGISESSID=d0c4341431844d96b9dd505f6640ef6b; oneTimePop=used",
+    "Referer": "https://www.ready.noaa.gov/hypub-bin/trajtype.pl?runtype=archive",
+    "Referrer-Policy": "strict-origin-when-cross-origin"
+  },
+  "body": "nsrc=1&trjtype=1",
+  "method": "POST"
+}); ;
