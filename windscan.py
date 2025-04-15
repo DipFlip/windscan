@@ -200,13 +200,17 @@ def run_hysplit_job(latitude=41.980000, longitude=-87.900000,
     # Return the job_id and the session for potential reuse (like downloading)
     return job_id, session
 
-def download_results(job_id, session):
+def download_results(job_id, session, start_year, start_month, start_day, start_hour):
     """
     Downloads the HYSPLIT results zip file.
 
     Args:
         job_id (str): The job ID obtained from submission.
         session (requests.Session): The session used for the job submission.
+        start_year (int): Start year (2-digit format).
+        start_month (int): Start month (1-12).
+        start_day (int): Start day (1-31).
+        start_hour (int): Start hour (0-23).
 
     Returns:
         str: The path to the downloaded file, or None if download failed.
@@ -215,8 +219,11 @@ def download_results(job_id, session):
         print("Invalid job ID or session for download.")
         return None
 
+    # Format the date/time string: YY-MM-DD-HH
+    date_str = f"{start_year:02d}-{start_month:02d}-{start_day:02d}-{start_hour:02d}"
+
     download_url = f"https://www.ready.noaa.gov/hypubout/gis_{job_id}.zip"
-    download_filename = f"gis_{job_id}.zip"
+    download_filename = f"gis_{job_id}_{date_str}.zip"
 
     print(f"Waiting 10 seconds before downloading results for job {job_id}...")
     time.sleep(10)
@@ -259,17 +266,24 @@ def download_results(job_id, session):
 
 if __name__ == "__main__":
     print("Starting HYSPLIT job submission...")
-    # Call with default lat/lon and date/time for now, but can be overridden:
-    # Example: Run for Jan 5th, 2023, 14:00 UTC from LA (34.05, -118.24)
-    # job_id, session = run_hysplit_job(latitude=34.05, longitude=-118.24,
-    #                                   start_year=23, start_month=1, start_day=5, start_hour=14)
-    job_id, session = run_hysplit_job() # Use defaults: Lat=41.98, Lon=-87.90, Date=2022-10-29 22:00
+    # Define parameters (or use argparse later)
+    lat = 41.980000
+    lon = -87.900000
+    year = 22
+    month = 10
+    day = 29
+    hour = 22
+
+    # Call with defined parameters
+    job_id, session = run_hysplit_job(latitude=lat, longitude=lon,
+                                      start_year=year, start_month=month, start_day=day, start_hour=hour)
+
     if job_id and session:
         print(f"Successfully submitted job. Job ID: {job_id}")
         print(f"Check results page at: https://www.ready.noaa.gov/hypub-bin/trajresults.pl?jobidno={job_id}")
 
-        # Attempt to download the results
-        downloaded_file = download_results(job_id, session)
+        # Attempt to download the results, passing date/time info for filename
+        downloaded_file = download_results(job_id, session, year, month, day, hour)
         if downloaded_file:
             print(f"Result download successful: {downloaded_file}")
         else:
