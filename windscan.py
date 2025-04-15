@@ -223,7 +223,7 @@ def download_results(job_id, session, start_year, start_month, start_day, start_
     date_str = f"{start_year:02d}-{start_month:02d}-{start_day:02d}-{start_hour:02d}"
 
     download_url = f"https://www.ready.noaa.gov/hypubout/gis_{job_id}.zip"
-    download_filename = f"gis_{job_id}_{date_str}.zip"
+    download_filename = f"gis_{date_str}_{job_id}.zip"
 
     print(f"Waiting 10 seconds before downloading results for job {job_id}...")
     time.sleep(10)
