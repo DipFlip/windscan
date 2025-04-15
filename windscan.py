@@ -5,10 +5,16 @@ import json
 from urllib.parse import urlparse, parse_qs
 import shutil
 
-def run_hysplit_job():
+def run_hysplit_job(latitude=41.980000, longitude=-87.900000):
     """
     Runs the HYSPLIT job request sequence based on the recorded messages.
-    Returns the job ID upon successful submission.
+
+    Args:
+        latitude (float): Starting latitude in decimal degrees. Default is 41.98.
+        longitude (float): Starting longitude in decimal degrees (negative for West). Default is -87.90.
+
+    Returns:
+        tuple: (job_id, session) or (None, None) if failed.
     """
     session = requests.Session()
 
@@ -54,7 +60,14 @@ def run_hysplit_job():
                 "sec-fetch-user": "?1",
                 "Referer": "https://www.ready.noaa.gov/hypub-bin/trajasrc.pl"
                }
-    data2 = "metdata=GDAS1&SOURCELOC=decdegree&Lat=41.980000&Latns=N&Lon=87.900000&Lonew=W&Latd=&Latm=&Lats=&Latdns=N&Lond=&Lonm=&Lons=&Londew=W&CITYNAME=&WMO="
+
+    # Determine N/S and E/W and absolute values for data2
+    lat_ns = 'N' if latitude >= 0 else 'S'
+    lon_ew = 'E' if longitude >= 0 else 'W'
+    abs_lat = abs(latitude)
+    abs_lon = abs(longitude)
+
+    data2 = f"metdata=GDAS1&SOURCELOC=decdegree&Lat={abs_lat:.6f}&Latns={lat_ns}&Lon={abs_lon:.6f}&Lonew={lon_ew}&Latd=&Latm=&Lats=&Latdns=N&Lond=&Lonm=&Lons=&Londew=W&CITYNAME=&WMO="
     try:
         print(f"POSTing to {url2}")
         response2 = session.post(url2, headers=headers2, data=data2)
@@ -94,7 +107,8 @@ def run_hysplit_job():
                 "sec-fetch-user": "?1",
                 "Referer": "https://www.ready.noaa.gov/hypub-bin/traj1.pl"
                }
-    data4 = "direction=Backward&vertical=0&Start+year=22&Start+month=10&Start+day=29&Start+hour=22&duration=168&repeatsrc=0&ntrajs=24&Source+lat=41.980000&Source+lon=-87.900000&Source+lat2=&Source+lon2=&Source+lat3=&Source+lon3=&Midlayer+height=No&Source+hgt1=500&Source+hunit=0&Source+hgt2=0&Source+hgt3=0&gis=1&gsize=96&Zoom+Factor=70&projection=0&Vertical+Unit=1&Label+Interval=6&color=Yes&colortype=Yes&pltsrc=1&circle=-1&county=arlmap&psfile=No&pdffile=Yes&mplot=YES&rain=1"
+    # Note: data4 expects longitude directly (negative for West)
+    data4 = f"direction=Backward&vertical=0&Start+year=22&Start+month=10&Start+day=29&Start+hour=22&duration=168&repeatsrc=0&ntrajs=24&Source+lat={latitude:.6f}&Source+lon={longitude:.6f}&Source+lat2=&Source+lon2=&Source+lat3=&Source+lon3=&Midlayer+height=No&Source+hgt1=500&Source+hunit=0&Source+hgt2=0&Source+hgt3=0&gis=1&gsize=96&Zoom+Factor=70&projection=0&Vertical+Unit=1&Label+Interval=6&color=Yes&colortype=Yes&pltsrc=1&circle=-1&county=arlmap&psfile=No&pdffile=Yes&mplot=YES&rain=1"
     job_submission_response = None
     try:
         print(f"POSTing to {url4}")
@@ -201,6 +215,8 @@ def download_results(job_id, session):
 
 if __name__ == "__main__":
     print("Starting HYSPLIT job submission...")
+    # Call with default lat/lon for now, but can be overridden:
+    # e.g., run_hysplit_job(latitude=34.05, longitude=-118.24)
     job_id, session = run_hysplit_job() # Get session back
     if job_id and session:
         print(f"Successfully submitted job. Job ID: {job_id}")
