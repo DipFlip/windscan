@@ -4,19 +4,61 @@ import time
 import json
 from urllib.parse import urlparse, parse_qs
 import shutil
+import datetime # Added for date calculations
 
-def run_hysplit_job(latitude=41.980000, longitude=-87.900000):
+def _get_month_abbr(month):
+    """Returns the 3-letter lowercase month abbreviation."""
+    try:
+        return datetime.date(2000, month, 1).strftime('%b').lower()
+    except ValueError:
+        raise ValueError("Invalid month provided. Must be between 1 and 12.")
+
+def _get_gdas_week_num(day):
+    """Calculates the GDAS week number (1-5) based on the day."""
+    if 1 <= day <= 7:
+        return 1
+    elif 8 <= day <= 14:
+        return 2
+    elif 15 <= day <= 21:
+        return 3
+    elif 22 <= day <= 28:
+        return 4
+    elif 29 <= day <= 31:
+        return 5
+    else:
+        raise ValueError("Invalid day provided. Must be between 1 and 31.")
+
+def run_hysplit_job(latitude=41.980000, longitude=-87.900000,
+                      start_year=22, start_month=10, start_day=29, start_hour=22):
     """
     Runs the HYSPLIT job request sequence based on the recorded messages.
 
     Args:
         latitude (float): Starting latitude in decimal degrees. Default is 41.98.
         longitude (float): Starting longitude in decimal degrees (negative for West). Default is -87.90.
+        start_year (int): Start year (2-digit format, e.g., 22 for 2022). Default is 22.
+        start_month (int): Start month (1-12). Default is 10.
+        start_day (int): Start day (1-31). Default is 29.
+        start_hour (int): Start hour (0-23). Default is 22.
 
     Returns:
         tuple: (job_id, session) or (None, None) if failed.
     """
     session = requests.Session()
+
+    # Validate inputs and calculate derived values
+    try:
+        month_abbr = _get_month_abbr(start_month)
+        week_num = _get_gdas_week_num(start_day)
+        # Ensure year is two digits, padding if necessary (e.g., 9 -> 09)
+        year_str = f"{start_year:02d}"
+    except ValueError as e:
+        print(f"Input validation error: {e}")
+        return None, None
+
+    # Construct the dynamic mfile name
+    mfile_name = f"gdas1.{month_abbr}{year_str}.w{week_num}"
+    print(f"Using meteorological data file: {mfile_name}")
 
     # Headers often remain similar, define a base set
     base_headers = {
@@ -87,7 +129,8 @@ def run_hysplit_job(latitude=41.980000, longitude=-87.900000):
                 "sec-fetch-user": "?1",
                 "Referer": "https://www.ready.noaa.gov/hypub-bin/trajsrcm.pl"
                }
-    data3 = "mfile=gdas1.oct22.w5"
+    # Use the dynamically generated mfile name
+    data3 = f"mfile={mfile_name}"
     try:
         print(f"POSTing to {url3}")
         response3 = session.post(url3, headers=headers3, data=data3)
@@ -108,7 +151,8 @@ def run_hysplit_job(latitude=41.980000, longitude=-87.900000):
                 "Referer": "https://www.ready.noaa.gov/hypub-bin/traj1.pl"
                }
     # Note: data4 expects longitude directly (negative for West)
-    data4 = f"direction=Backward&vertical=0&Start+year=22&Start+month=10&Start+day=29&Start+hour=22&duration=168&repeatsrc=0&ntrajs=24&Source+lat={latitude:.6f}&Source+lon={longitude:.6f}&Source+lat2=&Source+lon2=&Source+lat3=&Source+lon3=&Midlayer+height=No&Source+hgt1=500&Source+hunit=0&Source+hgt2=0&Source+hgt3=0&gis=1&gsize=96&Zoom+Factor=70&projection=0&Vertical+Unit=1&Label+Interval=6&color=Yes&colortype=Yes&pltsrc=1&circle=-1&county=arlmap&psfile=No&pdffile=Yes&mplot=YES&rain=1"
+    # Use the provided start date/time parameters
+    data4 = f"direction=Backward&vertical=0&Start+year={year_str}&Start+month={start_month}&Start+day={start_day}&Start+hour={start_hour}&duration=168&repeatsrc=0&ntrajs=24&Source+lat={latitude:.6f}&Source+lon={longitude:.6f}&Source+lat2=&Source+lon2=&Source+lat3=&Source+lon3=&Midlayer+height=No&Source+hgt1=500&Source+hunit=0&Source+hgt2=0&Source+hgt3=0&gis=1&gsize=96&Zoom+Factor=70&projection=0&Vertical+Unit=1&Label+Interval=6&color=Yes&colortype=Yes&pltsrc=1&circle=-1&county=arlmap&psfile=No&pdffile=Yes&mplot=YES&rain=1"
     job_submission_response = None
     try:
         print(f"POSTing to {url4}")
@@ -215,9 +259,11 @@ def download_results(job_id, session):
 
 if __name__ == "__main__":
     print("Starting HYSPLIT job submission...")
-    # Call with default lat/lon for now, but can be overridden:
-    # e.g., run_hysplit_job(latitude=34.05, longitude=-118.24)
-    job_id, session = run_hysplit_job() # Get session back
+    # Call with default lat/lon and date/time for now, but can be overridden:
+    # Example: Run for Jan 5th, 2023, 14:00 UTC from LA (34.05, -118.24)
+    # job_id, session = run_hysplit_job(latitude=34.05, longitude=-118.24,
+    #                                   start_year=23, start_month=1, start_day=5, start_hour=14)
+    job_id, session = run_hysplit_job() # Use defaults: Lat=41.98, Lon=-87.90, Date=2022-10-29 22:00
     if job_id and session:
         print(f"Successfully submitted job. Job ID: {job_id}")
         print(f"Check results page at: https://www.ready.noaa.gov/hypub-bin/trajresults.pl?jobidno={job_id}")
